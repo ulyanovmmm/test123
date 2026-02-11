@@ -5,3 +5,28 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Конверт с письмом</title>
   <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="scene" id="scene">
+    <h1>Конверт с письмом</h1>
+    <p class="hint">Нажми кнопку, чтобы открыть конверт.</p>
+
+    <div class="envelope" aria-live="polite">
+      <div class="envelope__back"></div>
+      <div class="envelope__flap"></div>
+
+      <article class="letter">
+        <h2>Привет! ✨</h2>
+        <p>
+          Это письмо анимировано выезжает из конверта после нажатия кнопки.
+          Здесь можно написать любое сообщение для пользователя.
+        </p>
+      </article>
+    </div>
+
+    <button class="open-btn" id="toggleBtn" type="button">Открыть конверт</button>
+  </main>
+
+  <script src="app.js"></script>
+  </body>
+</html>
