@@ -1,209 +1,190 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Конверт</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Конверт с письмом</title>
+  <style>
+    :root {
+      --bg-1: #1f2957;
+      --bg-2: #0f1630;
+      --env-main: #f4b564;
+      --env-dark: #dc983f;
+      --env-light: #ffd79f;
+      --paper: #fffdf6;
+      --text: #1b1b1b;
+    }
 
-<style>
-:root{
-  --bg1:#0b1220;
-  --bg2:#111a2e;
-  --paper:#f8f2e8;
-  --env:#f0b35a;
-  --env2:#e79f3c;
-  --env3:#d88a2c;
-}
+    * {
+      box-sizing: border-box;
+    }
 
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, sans-serif;
-  background: radial-gradient(1200px 700px at 50% 30%, #1a2b55 0%, var(--bg2) 45%, var(--bg1) 100%);
-  display:grid;
-  place-items:center;
-  color:white;
-}
+    html,
+    body {
+      height: 100%;
+    }
 
-.wrap{
-  text-align:center;
-}
+    body {
+      margin: 0;
+      display: grid;
+      place-items: center;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(1200px 700px at 50% 20%, var(--bg-1), var(--bg-2) 65%);
+      color: #fff;
+    }
 
-.stage{
-  position:relative;
-  margin-top:30px;
-}
+    .scene {
+      text-align: center;
+      width: min(92vw, 500px);
+    }
 
-.envelope{
-  position:relative;
-  width:380px;
-  height:240px;
-  perspective:1200px;
-  margin:auto;
-}
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.8rem;
+    }
 
-.env-body{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,var(--env),var(--env2));
-  border-radius:18px;
-  z-index:1;
-}
+    p.hint {
+      margin: 0 0 22px;
+      opacity: 0.85;
+    }
 
-.env-flap{
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height:140px;
-  background:linear-gradient(180deg,#ffd08b,#f0b35a);
-  clip-path: polygon(0 0,50% 100%,100% 0);
-  transform-origin:top;
-  transition:transform .6s cubic-bezier(.2,.9,.2,1);
-  z-index:4;
-}
+    .envelope {
+      position: relative;
+      width: min(88vw, 420px);
+      height: 260px;
+      margin: 0 auto;
+      perspective: 1200px;
+      filter: drop-shadow(0 16px 22px rgba(0, 0, 0, 0.35));
+    }
 
-.seal{
-  position:absolute;
-  left:50%;
-  top:55%;
-  transform:translate(-50%,-50%);
-  width:70px;
-  height:70px;
-  border-radius:50%;
-  background:radial-gradient(circle at 30% 30%, #ff6a6a, #d51f2a);
-  display:grid;
-  place-items:center;
-  font-weight:bold;
-  cursor:pointer;
-  z-index:5;
-  border:none;
-  color:white;
-}
+    .envelope__back {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      background: linear-gradient(180deg, var(--env-main), var(--env-dark));
+      overflow: hidden;
+    }
 
-.letter{
-  position:absolute;
-  left:8%;
-  right:8%;
-  bottom:10%;
-  height:80%;
-  background:white;
-  border-radius:14px;
-  box-shadow:0 15px 40px rgba(0,0,0,.3);
-  transform:translateY(30%);
-  opacity:0;
-  transition:all .6s cubic-bezier(.2,.9,.2,1);
-  z-index:2;
-  padding:25px;
-  color:#111;
-}
+    .envelope__back::before,
+    .envelope__back::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 52%;
+      height: 100%;
+      background: linear-gradient(180deg, #f8cb89, var(--env-main));
+    }
 
-.open .env-flap{
-  transform:rotateX(-170deg);
-}
+    .envelope__back::before {
+      left: -2px;
+      clip-path: polygon(0 100%, 100% 100%, 100% 28%);
+    }
 
-.open .letter{
-  transform:translateY(-60%);
-  opacity:1;
-}
+    .envelope__back::after {
+      right: -2px;
+      clip-path: polygon(0 28%, 0 100%, 100% 100%);
+    }
 
-/* fullscreen письмо */
-.letter-full .letter{
-  position:fixed;
-  left:50%;
-  top:50%;
-  width:min(700px,92vw);
-  height:min(600px,85vh);
-  transform:translate(-50%,-50%);
-  z-index:9999;
-}
+    .envelope__flap {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #ffe5bf, var(--env-light));
+      clip-path: polygon(0 0, 50% 58%, 100% 0);
+      transform-origin: top;
+      transition: transform 0.9s cubic-bezier(0.2, 0.9, 0.15, 1);
+      z-index: 4;
+    }
 
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.6);
-  /* backdrop-filter:blur(6px); */
-  z-index:9998;
-  display:none;
-}
+    .letter {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      bottom: 14px;
+      height: 76%;
+      border-radius: 14px;
+      background: var(--paper);
+      color: var(--text);
+      padding: 20px 22px;
+      text-align: left;
+      line-height: 1.45;
+      box-shadow: 0 14px 25px rgba(0, 0, 0, 0.23);
+      transform: translateY(58%) scale(0.96);
+      opacity: 0;
+      z-index: 2;
+      transition: transform 0.9s cubic-bezier(0.2, 0.9, 0.15, 1), opacity 0.6s ease;
+    }
 
-.overlay.show{
-  display:block;
-}
+    .letter h2 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+    }
 
-.close{
-  position:absolute;
-  top:12px;
-  right:15px;
-  font-size:20px;
-  border:none;
-  background:none;
-  cursor:pointer;
-}
+    .letter p {
+      margin: 0;
+    }
 
-</style>
+    .scene.open .envelope__flap {
+      transform: rotateX(-175deg);
+    }
+
+    .scene.open .letter {
+      transform: translateY(-48%) scale(1);
+      opacity: 1;
+    }
+
+    .open-btn {
+      margin-top: 20px;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #1b1b1b;
+      background: linear-gradient(180deg, #ffffff, #eaeaea);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .open-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .open-btn:active {
+      transform: translateY(1px);
+    }
+  </style>
 </head>
-
 <body>
+  <main class="scene" id="scene">
+    <h1>Конверт с письмом</h1>
+    <p class="hint">Нажми кнопку, чтобы открыть конверт.</p>
 
-<div class="wrap">
-  <h2>Нажми на OPEN</h2>
+    <div class="envelope" aria-live="polite">
+      <div class="envelope__back"></div>
+      <div class="envelope__flap"></div>
 
-  <div class="stage">
-    <div class="envelope" id="envelope">
-
-      <div class="env-body"></div>
-      <div class="env-flap"></div>
-
-      <button class="seal" id="seal">OPEN</button>
-
-      <div class="letter">
-        <button class="close" id="close">✕</button>
-        <h3>Привет 👋</h3>
+      <article class="letter">
+        <h2>Привет! ✨</h2>
         <p>
-          Теперь письмо полностью открывается поверх страницы.
-          Здесь можно разместить форму, кнопку Telegram,
-          оплату, фото или любой контент.
+          Это письмо анимировано выезжает из конверта после нажатия кнопки.
+          Здесь можно написать любое сообщение для пользователя.
         </p>
-      </div>
-
+      </article>
     </div>
-  </div>
-</div>
 
-<div class="overlay" id="overlay"></div>
+    <button class="open-btn" id="toggleBtn" type="button">Открыть конверт</button>
+  </main>
 
-<script>
-const envelope = document.getElementById('envelope');
-const seal = document.getElementById('seal');
-const closeBtn = document.getElementById('close');
-const overlay = document.getElementById('overlay');
+  <script>
+    const scene = document.getElementById('scene');
+    const toggleBtn = document.getElementById('toggleBtn');
 
-function openEnvelope(){
-  envelope.classList.add('open');
-  setTimeout(()=>{
-    envelope.classList.add('letter-full');
-    overlay.classList.add('show');
-  },300);
-}
-
-function closeEnvelope(){
-  envelope.classList.remove('letter-full');
-  overlay.classList.remove('show');
-  setTimeout(()=>{
-    envelope.classList.remove('open');
-  },200);
-}
-
-seal.addEventListener('click', openEnvelope);
-closeBtn.addEventListener('click', closeEnvelope);
-overlay.addEventListener('click', closeEnvelope);
-
-document.addEventListener('keydown', e=>{
-  if(e.key === 'Escape') closeEnvelope();
-});
-</script>
-
+    toggleBtn.addEventListener('click', () => {
+      const isOpen = scene.classList.toggle('open');
+      toggleBtn.textContent = isOpen ? 'Закрыть конверт' : 'Открыть конверт';
+    });
+  </script>
 </body>
 </html>
