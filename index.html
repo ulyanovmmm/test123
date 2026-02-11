@@ -41,3 +41,294 @@
       opacity:.95;
       letter-spacing:.2px;
     }
+    p{
+      margin: 0 0 22px;
+      font-size: 14px;
+      opacity:.8;
+    }
+
+    /* сцена */
+    .stage{
+      position:relative;
+      display:grid;
+      place-items:center;
+      padding: 36px 0 16px;
+    }
+
+    /* кнопка-контейнер */
+    .envelope-btn{
+      appearance:none;
+      border:0;
+      background:transparent;
+      padding:0;
+      cursor:pointer;
+      outline:none;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .envelope-btn:focus-visible .envelope{
+      box-shadow: 0 0 0 3px rgba(255,255,255,.22), 0 26px 55px var(--shadow);
+    }
+
+    .envelope{
+      position:relative;
+      width: min(380px, 84vw);
+      aspect-ratio: 5 / 3.2;
+      filter: drop-shadow(0 22px 36px var(--shadow));
+      transform: translateZ(0);
+      border-radius: 18px;
+      transition: transform .35s ease;
+    }
+
+    .envelope-btn:hover .envelope{
+      transform: translateY(-3px);
+    }
+
+    /* письмо */
+    .letter{
+      position:absolute;
+      left: 8%;
+      right: 8%;
+      bottom: 10%;
+      height: 80%;
+      background: linear-gradient(180deg, #fff 0%, var(--paper) 100%);
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.22);
+      transform: translateY(22%) scale(.98);
+      opacity: 0;
+      transition:
+        transform .7s cubic-bezier(.2,.9,.2,1),
+        opacity .35s ease;
+      z-index: 1;
+      overflow:hidden;
+    }
+
+    .letter:before{
+      content:"";
+      position:absolute;
+      inset: 0;
+      background:
+        radial-gradient(500px 160px at 50% -30px, rgba(0,0,0,.08), transparent 60%),
+        linear-gradient(90deg, rgba(0,0,0,.04) 0%, transparent 18%, transparent 82%, rgba(0,0,0,.03) 100%);
+      pointer-events:none;
+    }
+
+    .letter-content{
+      position:absolute;
+      inset: 18px 18px 16px;
+      color:#1b1b1b;
+      text-align:left;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .letter-title{
+      font-weight:750;
+      font-size: 16px;
+      letter-spacing:.2px;
+    }
+    .letter-text{
+      font-size: 13px;
+      line-height: 1.45;
+      opacity:.88;
+    }
+    .divider{
+      height:1px;
+      background: rgba(0,0,0,.08);
+      margin: 2px 0 6px;
+    }
+
+    /* корпус конверта */
+    .env-back{
+      position:absolute;
+      inset:0;
+      border-radius: 18px;
+      background: linear-gradient(180deg, var(--env) 0%, var(--env2) 100%);
+      z-index: 0;
+      border: 1px solid var(--stroke);
+      overflow:hidden;
+    }
+
+    /* декоративная текстура */
+    .env-back:before{
+      content:"";
+      position:absolute;
+      inset:-60px -60px;
+      background:
+        radial-gradient(240px 140px at 15% 20%, rgba(255,255,255,.16), transparent 60%),
+        radial-gradient(260px 160px at 90% 10%, rgba(255,255,255,.14), transparent 62%),
+        radial-gradient(420px 240px at 50% 110%, rgba(0,0,0,.18), transparent 55%);
+      transform: rotate(-8deg);
+      pointer-events:none;
+    }
+
+    /* нижний "клапан" (треугольник) */
+    .env-bottom{
+      position:absolute;
+      inset:0;
+      border-radius: 18px;
+      z-index: 3;
+      pointer-events:none;
+      overflow:hidden;
+    }
+    .env-bottom:before{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:-1px;
+      height: 78%;
+      background: linear-gradient(180deg, transparent 0%, transparent 20%, rgba(0,0,0,.08) 100%);
+      clip-path: polygon(0 0, 50% 68%, 100% 0, 100% 100%, 0 100%);
+      background-color: var(--env3);
+      border-top: 1px solid rgba(255,255,255,.14);
+    }
+
+    /* левый/правый клапаны */
+    .env-left, .env-right{
+      position:absolute;
+      inset:0;
+      z-index: 2;
+      pointer-events:none;
+      overflow:hidden;
+      border-radius: 18px;
+    }
+    .env-left:before{
+      content:"";
+      position:absolute;
+      left:-1px; top:-1px; bottom:-1px;
+      width: 58%;
+      background: linear-gradient(180deg, #f2bf70 0%, #e6a34a 100%);
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+      border-right: 1px solid rgba(255,255,255,.10);
+    }
+    .env-right:before{
+      content:"";
+      position:absolute;
+      right:-1px; top:-1px; bottom:-1px;
+      width: 58%;
+      background: linear-gradient(180deg, #f2bf70 0%, #e6a34a 100%);
+      clip-path: polygon(100% 0, 0 50%, 100% 100%);
+      border-left: 1px solid rgba(255,255,255,.10);
+    }
+
+    /* верхний клапан (анимация открытия) */
+    .env-flap{
+      position:absolute;
+      left:0; right:0; top:0;
+      height: 62%;
+      z-index: 4;
+      transform-origin: 50% 0%;
+      transform: rotateX(0deg);
+      transition: transform .7s cubic-bezier(.2,.9,.2,1);
+      border-radius: 18px 18px 10px 10px;
+      pointer-events:none;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.15));
+    }
+    .env-flap:before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background: linear-gradient(180deg, #ffd08b 0%, #f0b35a 100%);
+      clip-path: polygon(0 0, 50% 92%, 100% 0);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    /* печать */
+    .seal{
+      position:absolute;
+      left:50%;
+      top: 56%;
+      transform: translate(-50%,-50%);
+      width: 64px;
+      height: 64px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #ff6a6a, #d51f2a);
+      z-index: 5;
+      box-shadow: 0 10px 16px rgba(0,0,0,.25);
+      border: 1px solid rgba(255,255,255,.18);
+      transition: transform .7s cubic-bezier(.2,.9,.2,1), opacity .35s ease;
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      letter-spacing:.8px;
+      text-transform:uppercase;
+      font-size: 12px;
+      user-select:none;
+    }
+
+    /* состояние "открыто" */
+    .open .env-flap{
+      transform: rotateX(-165deg);
+    }
+    .open .seal{
+      transform: translate(-50%,-50%) scale(.88) translateY(10px);
+      opacity: .15;
+    }
+    .open .letter{
+      opacity: 1;
+      transform: translateY(-8%) scale(1);
+    }
+
+    /* текст снизу */
+    .hint{
+      margin-top: 14px;
+      font-size: 13px;
+      opacity: .75;
+    }
+
+    /* уважение к prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce){
+      .envelope, .env-flap, .letter, .seal{
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Нажми на конверт</h1>
+    <p>Он откроется с анимацией, и появится письмо.</p>
+
+    <section class="stage">
+      <button class="envelope-btn" id="toggle" aria-label="Открыть конверт">
+        <div class="envelope" id="envelope">
+          <div class="letter" aria-hidden="true">
+            <div class="letter-content">
+              <div class="letter-title">Привет 👋</div>
+              <div class="divider"></div>
+              <div class="letter-text">
+                Здесь будет твой контент: текст, форма, CTA-кнопка, что угодно.
+                Можно сделать появление поэтапно, добавить звук, конфетти и т.д.
+              </div>
+              <div class="letter-text" style="opacity:.7">
+                (Кликни ещё раз — закроется обратно)
+              </div>
+            </div>
+          </div>
+
+          <div class="env-back"></div>
+          <div class="env-left"></div>
+          <div class="env-right"></div>
+          <div class="env-bottom"></div>
+          <div class="env-flap"></div>
+          <div class="seal">OPEN</div>
+        </div>
+      </button>
+
+      <div class="hint">Работает на мобиле и десктопе</div>
+    </section>
+  </main>
+
+  <script>
+    const btn = document.getElementById('toggle');
+    const env = document.getElementById('envelope');
+
+    btn.addEventListener('click', () => {
+      env.classList.toggle('open');
+      btn.setAttribute('aria-label', env.classList.contains('open') ? 'Закрыть конверт' : 'Открыть конверт');
+    });
+
+    // Опционально: открыть по Enter/Space, если фокус на кнопке (по умолчанию уже ок).
+  </script>
+</body>
+</html>
